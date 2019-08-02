@@ -1,0 +1,38 @@
+.container{
+
+    background-color:rgb(58, 58, 58);
+}
+
+
+#move{
+    margin-left: 1200px;
+}
+
+#movies-view{
+    background-color:rgb(117, 161, 255);
+
+}
+
+
+
+body {
+    background-color: #cccccc;
+
+        background-image: url('w3css.gif');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center; 
+      }
+
+
+
+
+      .form-inline{
+          margin: 10px;
+          margin-left: 900px;
+      }
+
+
+      .container-fluid{
+          max-height: 10px;
+      }
