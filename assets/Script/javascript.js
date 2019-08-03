@@ -1,10 +1,10 @@
 $("button").on("click", function(){
   var x = $(this).data("search");
   console.log(x);
-  var queryURL = "http://api.giphy.com/v1/gifs/search?q="+x+"&api_key=dc6zaTOxFJmzC&limit=3";
+  var queryURL = "http://api.giphy.com/v1/gifs/search?q="+x+"&api_key=dc6zaTOxFJmzC&limit=15";
   console.log(queryURL)
 
-
+  $(".content").hide()
 
   $.ajax({url:queryURL,method:'GET'})
   .done(function(response){
@@ -16,13 +16,13 @@ $.ajax({url:queryURL, metthod:"GET"})
 
 
 
-  $(".container-fluid").empty()
+  $(".row").empty()
 
 
-  for(var i =0; i < response.data.length; i++){
-    $(".container-fluid").append("<di>" + "<img src =' " +response.data[i].images.downsized.url+"'>")
+for(var i =0; i < response.data.length; i++){
 
-$(".container-fluid").append("<p>Rating: " + response.data[i].rating + "</p>");
+$(".row").append("<p  id='hello' >Rating:"+ response.data[i].rating);
+$(".row").append("<img src =' "  +response.data[i].images.downsized.url+"'>")
 
   }
 
@@ -37,6 +37,8 @@ $(".container-fluid").append("<p>Rating: " + response.data[i].rating + "</p>");
 
 
 $(".container-fluid").on("click", function() {
+
+  
   // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
   var state = $(this).attr("data-state");
   // If the clicked image's state is still, update its src attribute to what its data-animate value is.
