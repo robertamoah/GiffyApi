@@ -1,57 +1,91 @@
-$("button").on("click", function(){
-  var x = $(this).data("search");
-  console.log(x);
-  var queryURL = "http://api.giphy.com/v1/gifs/search?q="+x+"&api_key=dc6zaTOxFJmzC&limit=15";
-  console.log(queryURL)
 
-  $(".content").hide()
+// this variable holds the animals names////////////////////////////////////////////////////////////////
+var animals=["aliens","cats","dogs","monkeys","rats","houseflys"]
+$(".row").empty()
 
-  $.ajax({url:queryURL,method:'GET'})
-  .done(function(response){
-    console.log(response)
-  });
-$.ajax({url:queryURL, metthod:"GET"})
-.done(function(response){
-  console.log(response)
+// makes the buttoms on top///////////////////////////////////////////////////
+function renderButtons() {
 
+  // Empty the #buttonsDiv prior to adding new animals
+  $("#buttons-view").empty();
 
-
-  $(".row").empty()
-
-
-for(var i =0; i < response.data.length; i++){
-
-$(".row").append("<p  id='hello' >Rating:"+ response.data[i].rating);
-$(".row").append("<img src =' "  +response.data[i].images.downsized.url+"'>")
-
+  // Loop through the array of animals
+  for (var i = 0; i < animals.length; i++) {
+    var a = $("<button class='btn btn-primary'>");
+    a.attr("data-robert1", animals[i]);
+    a.addClass("boddie")
+    a.text(animals[i]);
+    $("#buttons-view").append(a);
   }
+}
 
 
-
-
+$(".submit").on("click", function (event) {
   
-})
-
-
-
-
-
-$(".container-fluid").on("click", function() {
-
-  
-  // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-  var state = $(this).attr("data-state");
-  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-  // Then, set the image's data-state to animate
-  // Else set src to the data-still value
-  if (state === "still") {
-    $(this).attr("src", $(this).attr("data-animate"));
-    $(this).attr("data-state", "animate");
-  } else {
-    $(this).attr("src", $(this).attr("data-still"));
-    $(this).attr("data-state", "still");
-  }
+  event.preventDefault();
+  var robert = $(".field").val().trim();
+  animals.push(robert);
+  renderButtons();
 });
 
-})
+$(document).on("click", ".boddie", function () {
 
+
+  var robert1 = $(this).attr("data-robert1");
+
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    robert1 + "&api_key=DEhWzyPCxmlhmn2lsrYpZbjFWk6Rv4Yu&limit=10";
+
+ 
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  })
+
+    .then(function (response) {
+       console.log(queryURL);
+       console.log(response);
+
+      var results = response.data;
+
+      $(".row").empty()
+
+      for (var i = 0; i < results.length; i++) {
+        var allData = $("<div>");
+        var p = $("<p>").text("Rating: " + results[i].rating);
+        console.log(results[i].rating);
+        var gifImage = $("<img>");
+
+        gifImage.attr("src", results[i].images.fixed_width_small_still.url);
+        gifImage.attr('data-still', results[i].images.fixed_width_small_still.url);
+        gifImage.attr('data-animate', results[i].images.fixed_width_small.url);
+        gifImage.attr('class', "gif");
+        gifImage.attr('data-state', "still");
+
+        allData.append(gifImage);
+        allData.append(p);
+
+
+        
+        
+          $(".row").append(allData);
+  
+        
+      }
+
+   
+      $(".gif").on("click", function () {
+        
+        var state = $(this).attr("data-state");
+      
+        if (state === "still") {
+          $(this).attr("src", $(this).attr("data-animate"));
+          $(this).attr("data-state", "animate");
+        } else {
+          $(this).attr("src", $(this).attr("data-still"));
+          $(this).attr("data-state", "still");
+        }
+      });
+    });
+});
+renderButtons();
